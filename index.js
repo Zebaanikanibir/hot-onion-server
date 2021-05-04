@@ -3,14 +3,13 @@ const app = express()
 const port = process.env.PORT ||  5001
 const cors = require('cors');
 const objectId = require('mongodb').ObjectID
-const bodyParser = require('body-parser');
 require('dotenv').config()
 
 
 
 app.use(cors())
-app.use(bodyParser.json())
-
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
 
 
 app.get('/', (req, res) => {
@@ -52,7 +51,15 @@ app.get('/food',(req, res)=>
 
 
 
+app.get('/food/:id', (req, res)=>{
 
+foodCollection.find({ _id: objectId(req.params.id) })
+
+.toArray((err, documents) => {
+  res.send(documents[0])
+})
+
+})
 
 
 
